@@ -1,0 +1,17 @@
+{
+  "short_name": "Ninebeat",
+  "name": "Ninebeat Studio — Touch Workstation",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "512x512 any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./",
+  "background_color": "#090a0d",
+  "theme_color": "#090a0d",
+  "display": "standalone",
+  "orientation": "landscape"
+}
