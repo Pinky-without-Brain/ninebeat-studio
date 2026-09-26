@@ -66,6 +66,19 @@
   a {
     color: #00e5ff;
   }
+  .legal-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+  .legal-nav a {
+    text-decoration: none;
+  }
+  .legal-nav a[aria-current="page"] {
+    color: #7c8494;
+  }
   hr {
     border: none;
     border-top: 1px solid #171923;
@@ -76,6 +89,12 @@
 <body>
 <main>
 
+  <nav class="legal-nav" aria-label="Rechtliches">
+    <a href="./">← Zur App</a>
+    <a href="impressum.html">Impressum</a>
+    <a href="privacy.html" aria-current="page">Datenschutz</a>
+  </nav>
+
   <div class="lang-switch">
     <a href="#de">Deutsch</a>
     <a href="#en">English</a>
@@ -83,12 +102,43 @@
 
   <section id="de" lang="de">
     <h1>Datenschutzerklärung</h1>
-    <p class="meta">Ninebeat Studio — Touch Workstation · Stand: 17.09.2026</p>
+    <p class="meta">Ninebeat Studio — Touch Workstation · Stand: 26.09.2026</p>
 
     <p>
       Ninebeat Studio ist eine Web-Anwendung, die vollständig im Browser des
       Nutzers läuft. Es gibt keinen eigenen Server, an den Daten übertragen
-      werden, keine Analyse- oder Tracking-Dienste und keine Werbeeinblendungen.
+      werden, keine Analyse- oder Tracking-Dienste, keine Cookies und keine
+      Werbeeinblendungen. Die App lädt keine Inhalte von fremden Servern
+      nach (keine externen Schriften, Skripte oder Karten).
+    </p>
+
+    <h2>Verantwortlicher</h2>
+    <address>
+      Tom Klefler<br>
+      Leanderweg 8<br>
+      04277 Leipzig<br>
+      Deutschland<br>
+      E-Mail: <a href="mailto:tom.klefler@gmail.com">tom.klefler@gmail.com</a>
+    </address>
+
+    <h2>Bereitstellung der Web-Version (Hosting)</h2>
+    <p>
+      Die Web-Version wird über GitHub Pages ausgeliefert, einen Dienst der
+      GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107,
+      USA. Beim Aufruf der Seite verarbeitet GitHub technisch notwendige
+      Verbindungsdaten – insbesondere Ihre IP-Adresse, Datum und Uhrzeit des
+      Abrufs, die angeforderte Datei sowie Angaben zu Browser und
+      Betriebssystem –, um die Dateien auszuliefern und den Dienst gegen
+      Missbrauch abzusichern. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO;
+      das berechtigte Interesse liegt in der sicheren und zuverlässigen
+      Bereitstellung der Anwendung.
+    </p>
+    <p>
+      Dabei können Daten in die USA übermittelt werden. GitHub gibt an, nach
+      dem EU-US Data Privacy Framework zertifiziert zu sein. Ich selbst habe
+      keinen Zugriff auf diese Verbindungsdaten. Einzelheiten stehen in der
+      <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">Datenschutzerklärung von GitHub</a>.
+      Die installierte App (z. B. aus einem App-Store) ruft GitHub nicht auf.
     </p>
 
     <h2>Mikrofonzugriff</h2>
@@ -111,28 +161,42 @@
 
     <h2>Lokal gespeicherte Daten</h2>
     <p>
-      Einstellungen, Projekte, Presets und aufgenommenes Audiomaterial werden
-      ausschließlich lokal in Ihrem Browser gespeichert (LocalStorage und
-      IndexedDB). Diese Daten werden zu keinem Zeitpunkt an einen Server
-      übertragen. Sie können sie jederzeit über die Browser-Einstellungen
-      (Website-Daten löschen) oder innerhalb der App selbst entfernen.
+      Damit Ihre Arbeit einen Neustart übersteht, speichert die App auf Ihrem
+      Gerät: Einstellungen und Presets (LocalStorage), die laufende Sitzung
+      – Muster, Klangeinstellungen, Mischpult und Mastering – sowie
+      aufgenommenes oder importiertes Audiomaterial (IndexedDB) und für den
+      Offline-Betrieb die Programmdateien der App (Cache des Service
+      Workers). Diese Daten werden zu keinem Zeitpunkt an mich oder an Dritte
+      übertragen.
+    </p>
+    <p>
+      Die Speicherung ist für die von Ihnen ausdrücklich genutzte Funktion
+      erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Das automatische Speichern
+      lässt sich in der App unter SETUP → ALLGEMEIN abschalten, eine
+      gespeicherte Sitzung dort verwerfen. Vollständig entfernen Sie alle
+      Daten über die Einstellungen Ihres Browsers („Website-Daten löschen“).
     </p>
 
     <h2>Konten und personenbezogene Daten</h2>
     <p>
-      Ninebeat Studio verlangt keine Registrierung, kein Konto und erhebt
-      keine personenbezogenen Daten. Es findet keine Übermittlung an Dritte
-      statt.
+      Ninebeat Studio verlangt keine Registrierung und kein Konto. Ich
+      erhebe selbst keine personenbezogenen Daten. Die einzige Verarbeitung
+      außerhalb Ihres Geräts ist die oben beschriebene Auslieferung der
+      Web-Version durch GitHub.
     </p>
 
-    <h2>Kontakt</h2>
-    <p>Verantwortlich für diese Anwendung:</p>
-    <address>
-      Tom Klefler<br>
-      Leanderweg 8<br>
-      04277 Leipzig<br>
-      Deutschland
-    </address>
+    <h2>Ihre Rechte</h2>
+    <p>
+      Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung
+      (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung
+      (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21).
+      Da ich selbst keine Daten über Sie speichere, betreffen diese Rechte in
+      der Praxis die Verbindungsdaten bei GitHub; Anfragen können Sie an mich
+      oder direkt an GitHub richten. Außerdem können Sie sich bei einer
+      Datenschutz-Aufsichtsbehörde beschweren (Art. 77 DSGVO), etwa bei der
+      für mich zuständigen Sächsischen Datenschutz- und
+      Transparenzbeauftragten.
+    </p>
 
     <h2>Änderungen dieser Erklärung</h2>
     <p>
@@ -145,12 +209,42 @@
 
   <section id="en" lang="en">
     <h1>Privacy Policy</h1>
-    <p class="meta">Ninebeat Studio — Touch Workstation · Last updated: 2026-09-17</p>
+    <p class="meta">Ninebeat Studio — Touch Workstation · Last updated: 2026-09-26</p>
 
     <p>
       Ninebeat Studio is a web application that runs entirely in your
       browser. There is no backend server that data is sent to, no
-      analytics or tracking services, and no advertising.
+      analytics or tracking services, no cookies and no advertising. The
+      app loads no content from third-party servers (no external fonts,
+      scripts or maps).
+    </p>
+
+    <h2>Controller</h2>
+    <address>
+      Tom Klefler<br>
+      Leanderweg 8<br>
+      04277 Leipzig<br>
+      Germany<br>
+      Email: <a href="mailto:tom.klefler@gmail.com">tom.klefler@gmail.com</a>
+    </address>
+
+    <h2>Hosting of the web version</h2>
+    <p>
+      The web version is delivered via GitHub Pages, a service of GitHub,
+      Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. When
+      you open the page, GitHub processes technically necessary connection
+      data – in particular your IP address, date and time of the request,
+      the requested file and browser/operating-system details – in order to
+      deliver the files and protect the service against abuse. The legal
+      basis is Art. 6(1)(f) GDPR; the legitimate interest is the secure and
+      reliable provision of the application.
+    </p>
+    <p>
+      Data may be transferred to the USA in the process. GitHub states that
+      it is certified under the EU-U.S. Data Privacy Framework. I have no
+      access to this connection data myself. Details are in
+      <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub's privacy statement</a>.
+      The installed app (e.g. from an app store) does not contact GitHub.
     </p>
 
     <h2>Microphone access</h2>
@@ -173,27 +267,40 @@
 
     <h2>Locally stored data</h2>
     <p>
-      Settings, projects, presets and recorded audio material are stored
-      exclusively in your local browser storage (LocalStorage and
-      IndexedDB). This data is never transmitted to a server. You can
-      remove it at any time via your browser's site-data settings or from
-      within the app itself.
+      So that your work survives a restart, the app stores on your device:
+      settings and presets (LocalStorage), the current session – patterns,
+      sound settings, mixer and mastering – as well as recorded or imported
+      audio material (IndexedDB), and for offline use the app's program
+      files (service worker cache). This data is never transmitted to me or
+      to third parties.
+    </p>
+    <p>
+      This storage is required for the functionality you explicitly use
+      (Section 25(2) no. 2 TDDDG). Automatic saving can be switched off in
+      the app under SETUP → ALLGEMEIN, where a saved session can also be
+      discarded. To remove all data completely, use your browser's settings
+      ("clear site data").
     </p>
 
     <h2>Accounts and personal data</h2>
     <p>
-      Ninebeat Studio requires no registration, no account, and collects
-      no personal data. No data is shared with third parties.
+      Ninebeat Studio requires no registration and no account. I do not
+      collect any personal data myself. The only processing outside your
+      device is the delivery of the web version by GitHub described above.
     </p>
 
-    <h2>Contact</h2>
-    <p>Responsible for this application:</p>
-    <address>
-      Tom Klefler<br>
-      Leanderweg 8<br>
-      04277 Leipzig<br>
-      Germany
-    </address>
+    <h2>Your rights</h2>
+    <p>
+      You have the right of access (Art. 15 GDPR), rectification (Art. 16),
+      erasure (Art. 17), restriction of processing (Art. 18), data
+      portability (Art. 20) and objection (Art. 21). Since I do not store
+      any data about you myself, these rights in practice concern the
+      connection data held by GitHub; you can direct requests to me or to
+      GitHub. You also have the right to lodge a complaint with a data
+      protection supervisory authority (Art. 77 GDPR), for example the one
+      responsible for me, the Saxon Data Protection and Transparency
+      Commissioner.
+    </p>
 
     <h2>Changes to this policy</h2>
     <p>
