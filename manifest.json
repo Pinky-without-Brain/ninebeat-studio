@@ -1,0 +1,41 @@
+{
+  "id": "./",
+  "short_name": "Ninebeat",
+  "name": "Ninebeat Studio — Touch Workstation",
+  "description": "Digitale Touch-Workstation fuer elektronische Musikproduktion: analoge Drum-Machine, Bass-Synthesizer, 12-Pad-Sampler und 6-stimmiger Poly-Synth in einer App - direkt im Browser, offline nutzbar, ohne Konto und ohne Installation von Zusatzsoftware.",
+  "lang": "de",
+  "dir": "ltr",
+  "categories": ["music", "entertainment", "productivity"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "512x512 any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "./",
+  "scope": "./",
+  "background_color": "#090a0d",
+  "theme_color": "#090a0d",
+  "display": "standalone",
+  "orientation": "landscape"
+}

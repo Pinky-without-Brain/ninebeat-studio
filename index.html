@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full bg-hw-darkest select-none">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Ninebeat" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#090a0d" />
+    <script>
+      // Applies the saved theme (if any) before first paint, so the app
+      // never flashes NEON NOIR and then jumps to a different theme once
+      // React mounts. Mirrors src/theme/runtime.ts#applyTheme, but can't
+      // import it (this runs before any module loads) - kept deliberately
+      // tiny and defensive: a bad/missing value must never block the page.
+      // Must run after the meta tags above (it looks one of them up).
+      (function () {
+        try {
+          var raw = localStorage.getItem('ninebeat.settings.v1');
+          if (!raw) return;
+          var data = JSON.parse(raw);
+          var id = data && data.general && data.general.theme;
+          if (typeof id !== 'string' || !/^[a-z0-9-]{1,32}$/.test(id)) return;
+          document.documentElement.setAttribute('data-theme', id);
+          // Kept in sync with src/theme/registry.ts's THEMES by
+          // tests/smoke.mjs section [36] ("scheme" field === 'light').
+          var LIGHT_SCHEME_THEME_IDS = ['atelier'];
+          if (LIGHT_SCHEME_THEME_IDS.indexOf(id) !== -1) {
+            var bar = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+            if (bar) bar.setAttribute('content', 'default');
+          }
+        } catch (e) {
+          // Corrupted storage, disabled localStorage (private mode), etc. -
+          // fall through to the NEON NOIR default rather than block paint.
+        }
+      })();
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/ninebeat-studio/icon.svg" />
+    <link rel="apple-touch-icon" href="/ninebeat-studio/icon.svg" />
+    <link rel="manifest" href="/ninebeat-studio/manifest.json" />
+    <title>Ninebeat Studio — Hybrid Touch Workstation</title>
+    <script type="module" crossorigin src="/ninebeat-studio/assets/index-CS4wTexk.js"></script>
+    <link rel="stylesheet" crossorigin href="/ninebeat-studio/assets/index-DPzEX_wt.css">
+  </head>
+  <body class="h-full w-full overflow-hidden bg-hw-darkest text-hw-text touch-none">
+    <div id="root" class="h-full w-full flex flex-col"></div>
+  </body>
+</html>

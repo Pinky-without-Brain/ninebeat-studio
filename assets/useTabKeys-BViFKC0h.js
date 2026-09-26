@@ -1,0 +1,1 @@
+import{r as i,y as d}from"./index-CS4wTexk.js";function v(e,n,s){const r=i.useRef({tabs:e,current:n,select:s});r.current={tabs:e,current:n,select:s},i.useEffect(()=>{const o=a=>{const{tabs:t,current:f,select:u}=r.current,x=t.indexOf(f),c=t[(x+a+t.length)%t.length];c!==void 0&&u(c)};return d({"active.tabPrev":{down:()=>o(-1)},"active.tabNext":{down:()=>o(1)}})},[])}export{v as u};
