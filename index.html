@@ -38,7 +38,12 @@
           var raw = localStorage.getItem('ninebeat.settings.v1');
           if (!raw) return;
           var data = JSON.parse(raw);
-          var id = data && data.general && data.general.theme;
+          // Nur ein bewusst gewaehltes Theme zaehlt (`general.themeChosen`,
+          // Befund vom 30.09.2026): der Speicherstand traegt sonst auch das
+          // Theme, das nur die Vorgabe war, und wiederkehrende Nutzer
+          // blieben dunkel, obwohl ATELIER die Vorgabe ist.
+          if (!data || !data.general || data.general.themeChosen !== true) return;
+          var id = data.general.theme;
           if (typeof id !== 'string' || !/^[a-z0-9-]{1,32}$/.test(id)) return;
           document.documentElement.setAttribute('data-theme', id);
 
@@ -58,7 +63,7 @@
     <link rel="apple-touch-icon" href="/ninebeat-studio/icon.svg" />
     <link rel="manifest" href="/ninebeat-studio/manifest.json" />
     <title>Ninebeat Studio — Hybrid Touch Workstation</title>
-    <script type="module" crossorigin src="/ninebeat-studio/assets/index-DIP_eeY0.js"></script>
+    <script type="module" crossorigin src="/ninebeat-studio/assets/index-D80s7hX7.js"></script>
     <link rel="stylesheet" crossorigin href="/ninebeat-studio/assets/index-CM6g3ku9.css">
   </head>
   <body class="h-full w-full overflow-hidden bg-hw-darkest text-hw-text touch-none">
