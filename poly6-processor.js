@@ -94,6 +94,9 @@ class Poly6Processor extends AudioWorkletProcessor {
     this.chorusLfoPhase1 = 0;
     this.chorusLfoPhase2 = Math.PI * 0.5;
     this.chorusLfoPhase3 = Math.PI;
+    this.synthLfoPhase = 0;
+    this.synthLfoDelayTime = 2.0; // max delay time
+    this.synthLfoDelayTimer = 2.0; // current timer
 
     this.params = {
       dco: { range: "8'", lfoAmount: 0, sawEnabled: true, squareEnabled: false, triangleEnabled: false, sineEnabled: false, pulseEnabled: false, pwmMode: 'manual', pwmAmount: 0, subEnabled: false, subLevel: 0, noiseLevel: 0 },
@@ -172,6 +175,30 @@ class Poly6Processor extends AudioWorkletProcessor {
     const slideDepth = mpe.slideToCutoff;
 
     const lfoInc = (2.0 * Math.PI * lfo.rate) / this.sampleRate;
+    
+    // Step synth LFO
+    this.synthLfoPhase += lfoInc;
+    if (this.synthLfoPhase > 2.0 * Math.PI) this.synthLfoPhase -= 2.0 * Math.PI;
+    
+    // Synth LFO is a triangle wave: 0 to 2PI -> 0 to 1 to 0 to -1 to 0
+    // Actually standard LFO is usually bipolar [-1, 1].
+    // Math.sin is easy, but if it's a triangle:
+    let synthLfoVal = 2.0 * Math.abs(2.0 * (this.synthLfoPhase / (2.0 * Math.PI)) - 1.0) - 1.0;
+    
+    // Delay envelope
+    // lfo.delay is 0..100 (from the store). 100 = 2 seconds.
+    // Wait, the store lfo.delay is 0..1? I will check poly6Store.
+    // Let's assume lfo.delay is 0..2 seconds directly, or I need to read the actual value. Let's just use lfo.delay.
+    const delayTarget = lfo.delay || 0; 
+    this.synthLfoDelayTimer += 1.0 / this.sampleRate;
+    let lfoDelayEnv = 1.0;
+    if (delayTarget > 0) {
+      if (this.synthLfoDelayTimer < delayTarget) {
+        lfoDelayEnv = this.synthLfoDelayTimer / delayTarget;
+      }
+    }
+    const finalSynthLfoVal = synthLfoVal * lfoDelayEnv;
+
 
     let chorusRateL = 0.4;
     let chorusRateR = 0.6;
@@ -257,7 +284,7 @@ class Poly6Processor extends AudioWorkletProcessor {
           if (dco.pwmMode === 'manual') {
             pw = 0.05 + dco.pwmAmount * 0.9;
           } else {
-            pw = 0.5 + Math.sin(this.chorusLfoPhase2) * (dco.pwmAmount * 0.42);
+            pw = 0.5 + finalSynthLfoVal * (dco.pwmAmount * 0.42);
           }
           pw = Math.max(0.05, Math.min(0.95, pw));
 
@@ -335,7 +362,7 @@ class Poly6Processor extends AudioWorkletProcessor {
 
         let envModAmt = vcf.envMod * (vcf.envPolarity === 'pos' ? 1.0 : -1.0);
         const keyTrackFactor = Math.pow(2.0, ((voice.midiNote - 60) / 12.0) * vcf.keyTrack);
-        const lfoCutMod = Math.sin(this.chorusLfoPhase2) * vcf.lfoMod * 0.5;
+        const lfoCutMod = finalSynthLfoVal * vcf.lfoMod * 0.5;
 
         let effectiveCutoff = vcf.cutoff * keyTrackFactor * Math.pow(2.0, envModAmt * voice.envValue * 4.0 + lfoCutMod);
         if (voice.timbreCurrent > 0) {
