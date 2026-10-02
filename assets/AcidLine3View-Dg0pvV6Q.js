@@ -1,4 +1,4 @@
-import{c as L,q as C,u as V,j as e,k as F,h as b,A as H,L as K,H as v,e as P,r as k,s as D,Z as W,W as U,i as Y,g as Z,t as Q,l as B,P as X}from"./index-ChHA0wLo.js";import{E as J}from"./ElementsBackground-C15nONwg.js";import{D as ee}from"./disc-3-CD9hTJ3a.js";import{C as te}from"./copy-BOKqKt0C.js";import{C as se}from"./clipboard-check-DyvrMoxP.js";import{L as re,S as ae,C as ne}from"./PadRecordingModal-Tn9yBSQU.js";import{I as oe}from"./InstrumentRecButton-B26YRmwq.js";/**
+import{c as L,q as C,u as V,j as e,k as F,h as b,A as H,L as K,H as v,e as P,r as k,s as D,Z as W,W as U,i as Y,g as Z,t as Q,l as B,P as X}from"./index-DVdP0bDW.js";import{E as J}from"./ElementsBackground-Bj69TPk6.js";import{D as ee}from"./disc-3-DDl5YpaX.js";import{C as te}from"./copy-DIIp-RH1.js";import{C as se}from"./clipboard-check-D2EynvMi.js";import{L as re,S as ae,C as ne}from"./PadRecordingModal-e2aDwt9h.js";import{I as oe}from"./InstrumentRecButton-B83FATy_.js";/**
  * @license lucide-react v1.43.0 - ISC
  *
  * This source code is licensed under the ISC license.

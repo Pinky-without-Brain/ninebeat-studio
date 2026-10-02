@@ -97,15 +97,20 @@ class Poly6Processor extends AudioWorkletProcessor {
     this.synthLfoPhase = 0;
     this.synthLfoDelayTime = 2.0; // max delay time
     this.synthLfoDelayTimer = 2.0; // current timer
+    this.bbdFilterL = 0;
+    this.bbdFilterR = 0;
 
     this.params = {
-      dco: { range: "8'", lfoAmount: 0, sawEnabled: true, squareEnabled: false, triangleEnabled: false, sineEnabled: false, pulseEnabled: false, pwmMode: 'manual', pwmAmount: 0, subEnabled: false, subLevel: 0, noiseLevel: 0 },
-      hpf: { mode: 0 },
+      dco: { octaveTranspose: 'normal', lfoAmount: 0, sawEnabled: true, pulseEnabled: false, extraWaveEnabled: false, extraWave: 'sine', pwmMode: 'man', pwmAmount: 0, subEnabled: false, subLevel: 0, noiseLevel: 0 },
+      hpf: { cutoff: 0, bassBoost: false },
       vcf: { cutoff: 1000, resonance: 0, envMod: 0, envPolarity: 'pos', lfoMod: 0, keyTrack: 0 },
       vca: { mode: 'env', level: 0.8 },
       adsr: { attack: 0.01, decay: 0.1, sustain: 0.5, release: 0.1 },
       chorusMode: 'off',
-      lfo: { rate: 1 }
+      lfo: { rate: 1 },
+      benderValue: 0,
+      bendSensDco: 2.0,
+      bendSensVcf: 0.0
     };
     this.concertPitch = 440;
     this.mpe = { pressureToLevel: 0, slideToCutoff: 0 };
@@ -115,7 +120,7 @@ class Poly6Processor extends AudioWorkletProcessor {
       this.voices.push({
         index: i, active: false, midiNote: 0, frequency: 261.63, velocity: 0.8, noteOnTime: 0,
         phase: 0, subPhase: 0, z1: 0, z2: 0, z3: 0, z4: 0,
-        hpfX1: 0, hpfX2: 0, hpfY1: 0, hpfY2: 0,
+        hpfX1: 0, hpfX2: 0, hpfY1: 0, hpfY2: 0, bbX1: 0, bbX2: 0, bbY1: 0, bbY2: 0,
         noteId: 0, bendTarget: 1, bendCurrent: 1, pressureTarget: 0, pressureCurrent: 0,
         timbreTarget: 0, timbreCurrent: 0, envStage: 'idle', envValue: 0,
         attackInc: 0.01, decayCoeff: 0.999, releaseCoeff: 0.999, gateGain: 0, gateTarget: 0
@@ -169,7 +174,7 @@ class Poly6Processor extends AudioWorkletProcessor {
     outL.fill(0);
     outR.fill(0);
 
-    const { dco, hpf, vcf, vca, adsr, chorusMode, lfo } = this.params;
+    const { dco, hpf, vcf, vca, adsr, chorusMode, lfo, benderValue, bendSensDco, bendSensVcf, vcfPedal } = this.params;
     const mpe = this.mpe;
     const pressDepth = mpe.pressureToLevel;
     const slideDepth = mpe.slideToCutoff;
@@ -207,9 +212,10 @@ class Poly6Processor extends AudioWorkletProcessor {
     let chorusFeedback = 0.0;
 
     if (chorusMode === 'I') {
-      chorusRateL = 0.4; chorusRateR = 0.55; chorusDepth = 0.0018; chorusBaseDelay = 0.0055;
+      chorusRateL = 0.5; chorusRateR = 0.5; chorusDepth = 0.0018; chorusBaseDelay = 0.0055;
     } else if (chorusMode === 'II') {
-      chorusRateL = 0.65; chorusRateR = 0.85; chorusDepth = 0.0032; chorusBaseDelay = 0.0055;
+      // II schneller und tiefer als I
+      chorusRateL = 0.8; chorusRateR = 0.8; chorusDepth = 0.0035; chorusBaseDelay = 0.0055;
     } else if (chorusMode === 'I+II') {
       chorusRateL = 7.5; chorusRateR = 8.2; chorusDepth = 0.0015; chorusBaseDelay = 0.004;
     } else if (chorusMode === 'flanger') {
@@ -246,7 +252,8 @@ class Poly6Processor extends AudioWorkletProcessor {
 
         const lfoVal = Math.sin(this.chorusLfoPhase1);
         const pitchMod = 1.0 + lfoVal * dco.lfoAmount * 0.04;
-        const noteFreq = voice.frequency * voice.bendCurrent * pitchMod;
+        const benderPitchMult = Math.pow(2.0, (benderValue * bendSensDco) / 12.0);
+        const noteFreq = voice.frequency * voice.bendCurrent * pitchMod * benderPitchMult;
         const dt = noteFreq / this.sampleRate;
 
         voice.phase += dt;
@@ -263,28 +270,14 @@ class Poly6Processor extends AudioWorkletProcessor {
           oscOut += saw * 0.8;
         }
 
-        if (dco.squareEnabled) {
-          let sq = voice.phase < 0.5 ? 1.0 : -1.0;
-          sq += polyBlep(voice.phase, dt);
-          sq -= polyBlep((voice.phase + 0.5) % 1.0, dt);
-          oscOut += sq * 0.7;
-        }
-
-        if (dco.triangleEnabled) {
-          const tri = 1.0 - 4.0 * Math.abs(voice.phase - 0.5);
-          oscOut += tri * 0.8;
-        }
-
-        if (dco.sineEnabled) {
-          oscOut += Math.sin(2.0 * Math.PI * voice.phase) * 0.8;
-        }
-
         if (dco.pulseEnabled) {
           let pw = 0.5;
-          if (dco.pwmMode === 'manual') {
-            pw = 0.05 + dco.pwmAmount * 0.9;
-          } else {
+          if (dco.pwmMode === 'man') {
+            pw = 0.5 - dco.pwmAmount * 0.45;
+          } else if (dco.pwmMode === 'lfo') {
             pw = 0.5 + finalSynthLfoVal * (dco.pwmAmount * 0.42);
+          } else if (dco.pwmMode === 'env') {
+            pw = 0.5 - voice.envValue * (dco.pwmAmount * 0.45);
           }
           pw = Math.max(0.05, Math.min(0.95, pw));
 
@@ -292,6 +285,20 @@ class Poly6Processor extends AudioWorkletProcessor {
           pulse += polyBlep(voice.phase, dt);
           pulse -= polyBlep((voice.phase - pw + 1.0) % 1.0, dt);
           oscOut += pulse * 0.75;
+        }
+
+        if (dco.extraWaveEnabled) {
+          if (dco.extraWave === 'square') {
+            let sq = voice.phase < 0.5 ? 1.0 : -1.0;
+            sq += polyBlep(voice.phase, dt);
+            sq -= polyBlep((voice.phase + 0.5) % 1.0, dt);
+            oscOut += sq * 0.7;
+          } else if (dco.extraWave === 'triangle') {
+            const tri = 1.0 - 4.0 * Math.abs(voice.phase - 0.5);
+            oscOut += tri * 0.8;
+          } else if (dco.extraWave === 'sine') {
+            oscOut += Math.sin(2.0 * Math.PI * voice.phase) * 0.8;
+          }
         }
 
         if (dco.subEnabled && dco.subLevel > 0) {
@@ -306,19 +313,16 @@ class Poly6Processor extends AudioWorkletProcessor {
         }
 
         let filteredHpf = oscOut;
-        if (hpf.mode === 1) {
-          const cutNorm = (2.0 * Math.PI * 120.0) / this.sampleRate;
+        if (hpf.cutoff > 0) {
+          const freq = 1000.0 * hpf.cutoff;
+          const cutNorm = (2.0 * Math.PI * freq) / this.sampleRate;
           const a = 1.0 / (1.0 + cutNorm);
           voice.hpfY1 = a * (voice.hpfY1 + oscOut - voice.hpfX1);
           voice.hpfX1 = oscOut;
           filteredHpf = voice.hpfY1;
-        } else if (hpf.mode === 2) {
-          const cutNorm = (2.0 * Math.PI * 240.0) / this.sampleRate;
-          const a = 1.0 / (1.0 + cutNorm);
-          voice.hpfY1 = a * (voice.hpfY1 + oscOut - voice.hpfX1);
-          voice.hpfX1 = oscOut;
-          filteredHpf = voice.hpfY1;
-        } else if (hpf.mode === 3) {
+        }
+
+        if (hpf.bassBoost) {
           const f0 = 90.0;
           const Q = 1.4;
           const boostGain = 1.55;
@@ -331,11 +335,11 @@ class Poly6Processor extends AudioWorkletProcessor {
           const a1 = (-2.0 * Math.cos(w0)) / a0;
           const a2 = (1.0 - alpha / boostGain) / a0;
 
-          const y = b0 * oscOut + b1 * voice.hpfX1 + b2 * voice.hpfX2 - a1 * voice.hpfY1 - a2 * voice.hpfY2;
-          voice.hpfX2 = voice.hpfX1;
-          voice.hpfX1 = oscOut;
-          voice.hpfY2 = voice.hpfY1;
-          voice.hpfY1 = y;
+          const y = b0 * filteredHpf + b1 * voice.bbX1 + b2 * voice.bbX2 - a1 * voice.bbY1 - a2 * voice.bbY2;
+          voice.bbX2 = voice.bbX1;
+          voice.bbX1 = filteredHpf;
+          voice.bbY2 = voice.bbY1;
+          voice.bbY1 = y;
           filteredHpf = y * 0.9;
         }
 
@@ -363,8 +367,9 @@ class Poly6Processor extends AudioWorkletProcessor {
         let envModAmt = vcf.envMod * (vcf.envPolarity === 'pos' ? 1.0 : -1.0);
         const keyTrackFactor = Math.pow(2.0, ((voice.midiNote - 60) / 12.0) * vcf.keyTrack);
         const lfoCutMod = finalSynthLfoVal * vcf.lfoMod * 0.5;
+        const benderCutMod = benderValue * bendSensVcf * 4.0;
 
-        let effectiveCutoff = vcf.cutoff * keyTrackFactor * Math.pow(2.0, envModAmt * voice.envValue * 4.0 + lfoCutMod);
+        let effectiveCutoff = vcf.cutoff * keyTrackFactor * Math.pow(2.0, envModAmt * voice.envValue * 4.0 + lfoCutMod + benderCutMod + vcfPedal * 3.0);
         if (voice.timbreCurrent > 0) {
           effectiveCutoff *= Math.pow(2.0, voice.timbreCurrent * slideDepth * 2.5);
         }
@@ -372,7 +377,8 @@ class Poly6Processor extends AudioWorkletProcessor {
 
         const g = Math.tan((Math.PI * effectiveCutoff) / this.sampleRate);
         const gNorm = g / (1.0 + g);
-        const resoFeedback = Math.max(0.0, Math.min(0.98, vcf.resonance)) * 3.85;
+        // Self-oscillation ab dem oberen Reglerende (VCF calibration Phase 9)
+          const resoFeedback = Math.max(0.0, Math.min(1.0, vcf.resonance)) * 4.4;
 
         const u = Math.tanh(filteredHpf - resoFeedback * voice.z4);
 
@@ -408,16 +414,21 @@ class Poly6Processor extends AudioWorkletProcessor {
         const writeIdx = this.chorusWriteIndex;
 
         const modL = (Math.sin(this.chorusLfoPhase1) + 1.0) * 0.5;
+        let modR = (Math.sin(this.chorusLfoPhase2) + 1.0) * 0.5;
+        
+        // Stereo gegenphasig f�r Chorus I und II (Phase 9)
+        if (chorusMode === 'I' || chorusMode === 'II') {
+          modR = (Math.sin(this.chorusLfoPhase1 + Math.PI) + 1.0) * 0.5;
+        }
+        
         const delaySamplesL = (chorusBaseDelay + modL * chorusDepth) * this.sampleRate;
-
-        const modR = (Math.sin(this.chorusLfoPhase2) + 1.0) * 0.5;
         const delaySamplesR = (chorusBaseDelay + modR * chorusDepth) * this.sampleRate;
 
         let readIdxL = writeIdx - delaySamplesL;
         if (readIdxL < 0) readIdxL += bufferSize;
         const idxL_int = Math.floor(readIdxL);
         const fracL = readIdxL - idxL_int;
-        const wetL =
+        let wetL =
           this.chorusBufferL[idxL_int % bufferSize] * (1.0 - fracL) +
           this.chorusBufferL[(idxL_int + 1) % bufferSize] * fracL;
 
@@ -425,9 +436,20 @@ class Poly6Processor extends AudioWorkletProcessor {
         if (readIdxR < 0) readIdxR += bufferSize;
         const idxR_int = Math.floor(readIdxR);
         const fracR = readIdxR - idxR_int;
-        const wetR =
+        let wetR =
           this.chorusBufferR[idxR_int % bufferSize] * (1.0 - fracR) +
           this.chorusBufferR[(idxR_int + 1) % bufferSize] * fracR;
+
+        // BBD Noise and Bandlimiting (Phase 9)
+        this.noiseSeed = (this.noiseSeed * 1664525 + 1013904223) | 0;
+        const bbdNoise = ((this.noiseSeed & 0xffff) / 32768.0 - 1.0) * 0.005;
+        
+        if (chorusMode === 'I' || chorusMode === 'II' || chorusMode === 'ensemble') {
+          this.bbdFilterL = this.bbdFilterL + 0.45 * (wetL - this.bbdFilterL);
+          this.bbdFilterR = this.bbdFilterR + 0.45 * (wetR - this.bbdFilterR);
+          wetL = this.bbdFilterL + bbdNoise;
+          wetR = this.bbdFilterR + bbdNoise;
+        }
 
         let ensembleTap = 0.0;
         if (chorusMode === 'ensemble') {
