@@ -442,7 +442,7 @@ class Poly6Processor extends AudioWorkletProcessor {
 
         // BBD Noise and Bandlimiting (Phase 9)
         this.noiseSeed = (this.noiseSeed * 1664525 + 1013904223) | 0;
-        const bbdNoise = ((this.noiseSeed & 0xffff) / 32768.0 - 1.0) * 0.005;
+        const bbdNoise = 0.0;
         
         if (chorusMode === 'I' || chorusMode === 'II' || chorusMode === 'ensemble') {
           this.bbdFilterL = this.bbdFilterL + 0.45 * (wetL - this.bbdFilterL);

@@ -16,7 +16,7 @@
 // genau diese Fehlerklasse hat dort schon einmal die Drum-Machine verstummen
 // lassen).
 
-const CACHE_NAME = 'ninebeat-shell-v2aaaee948b3b';
+const CACHE_NAME = 'ninebeat-shell-vf7ece921eab9';
 const PRECACHE_URLS = [
   "./index.html",
   "./manifest.json",
