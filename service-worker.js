@@ -16,7 +16,7 @@
 // genau diese Fehlerklasse hat dort schon einmal die Drum-Machine verstummen
 // lassen).
 
-const CACHE_NAME = 'ninebeat-shell-vd0141270bd44';
+const CACHE_NAME = 'ninebeat-shell-v2aaaee948b3b';
 const PRECACHE_URLS = [
   "./index.html",
   "./manifest.json",
@@ -28,26 +28,27 @@ const PRECACHE_URLS = [
   "./ninebeat-processor.js",
   "./capture-tap-processor.js",
   "./environment-shim.js",
-  "./assets/index-DoiNqCMo.css",
-  "./assets/index-DVdP0bDW.js",
-  "./assets/NinebeatView-BirSHG7H.js",
-  "./assets/AcidLine3View-Dg0pvV6Q.js",
-  "./assets/clipboard-check-D2EynvMi.js",
-  "./assets/SamplerView-Bc0VTxqY.js",
-  "./assets/repeat-DEA0Xlg3.js",
-  "./assets/copy-DIIp-RH1.js",
-  "./assets/Poly6View-Dj_VKT37.js",
-  "./assets/funnel-D26rC3Ey.js",
-  "./assets/InstrumentRecButton-B83FATy_.js",
-  "./assets/music-BU14LyyY.js",
-  "./assets/PadRecordingModal-e2aDwt9h.js",
-  "./assets/StudioMixer-6d2P9fCG.js",
-  "./assets/disc-3-DDl5YpaX.js",
-  "./assets/flame-BLeHksqE.js",
-  "./assets/CRTView-EbOpI3dy.js",
-  "./assets/zoom-in-BGq4w10E.js",
-  "./assets/useTabKeys-DclOT6Am.js",
-  "./assets/ElementsBackground-Bj69TPk6.js"
+  "./assets/index-BYncYYsM.css",
+  "./assets/index-Du_jKtR5.js",
+  "./assets/NinebeatView-7822sI-2.js",
+  "./assets/AcidLine3View-BELuxPOF.js",
+  "./assets/clipboard-check-B3kSm4GE.js",
+  "./assets/SamplerView-CjS-ecfc.js",
+  "./assets/repeat-DPurLWcD.js",
+  "./assets/copy-YzPRJHZ1.js",
+  "./assets/Poly6View-COwZIHdK.js",
+  "./assets/funnel-B4Rl1u-l.js",
+  "./assets/InstrumentRecButton-D_kqz4E-.js",
+  "./assets/music-DYwPiMax.js",
+  "./assets/PadRecordingModal-oU8WCeVH.js",
+  "./assets/StudioMixer-BrfDWTpy.js",
+  "./assets/disc-3-CxEJ1kyR.js",
+  "./assets/flame-Bek1VbMa.js",
+  "./assets/CRTView-DJbAfVQY.js",
+  "./assets/zoom-in-CLh7KI9X.js",
+  "./assets/layers-VwxG7Z5D.js",
+  "./assets/useTabKeys-CNmus7iw.js",
+  "./assets/ElementsBackground-Y8fYMeib.js"
 ];
 
 self.addEventListener('install', (event) => {
