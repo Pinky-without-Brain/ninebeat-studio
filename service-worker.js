@@ -16,7 +16,7 @@
 // genau diese Fehlerklasse hat dort schon einmal die Drum-Machine verstummen
 // lassen).
 
-const CACHE_NAME = 'ninebeat-shell-v6ba6d8c80e37';
+const CACHE_NAME = 'ninebeat-shell-v2a8369cee548';
 const PRECACHE_URLS = [
   "./index.html",
   "./manifest.json",
@@ -28,27 +28,28 @@ const PRECACHE_URLS = [
   "./ninebeat-processor.js",
   "./capture-tap-processor.js",
   "./environment-shim.js",
-  "./assets/index-BYncYYsM.css",
-  "./assets/index-qJT5zTI4.js",
-  "./assets/NinebeatView-DuBA7psG.js",
-  "./assets/AcidLine3View-CRPzf8P8.js",
-  "./assets/clipboard-check-CObK0rlk.js",
-  "./assets/SamplerView-DHLbL-XC.js",
-  "./assets/repeat-DRnJubWU.js",
-  "./assets/copy-BBTiU4D4.js",
-  "./assets/Poly6View-DwMFpPMz.js",
-  "./assets/funnel-DL2qKZWC.js",
-  "./assets/InstrumentRecButton-D0ASc16E.js",
-  "./assets/music-CxB4z-s8.js",
-  "./assets/PadRecordingModal-CXuwqH2Y.js",
-  "./assets/StudioMixer-Bow2dm2K.js",
-  "./assets/disc-3-BxBMh731.js",
-  "./assets/flame-DI6YsPwo.js",
-  "./assets/CRTView-Drp7NeFv.js",
-  "./assets/zoom-in-CLJOttMS.js",
-  "./assets/layers-CT9ez0eD.js",
-  "./assets/useTabKeys-DmlSckh_.js",
-  "./assets/ElementsBackground-Dy9WDjna.js"
+  "./assets/index-CfDjUO19.css",
+  "./assets/index-CwqJXZVw.js",
+  "./assets/NinebeatView-CwC5MCCf.js",
+  "./assets/AcidLine3View-ZkAo0CLz.js",
+  "./assets/clipboard-check-egmpMCBN.js",
+  "./assets/SamplerView-CSzwyuTx.js",
+  "./assets/repeat-Dy5Hu-vy.js",
+  "./assets/copy-CqY80Rlu.js",
+  "./assets/Poly6View-BIv7yYuW.js",
+  "./assets/funnel-BnQPrM9U.js",
+  "./assets/InstrumentRecButton-7HeZH2tR.js",
+  "./assets/music-DReRdeFE.js",
+  "./assets/PadRecordingModal-tgrS5ZKl.js",
+  "./assets/StudioMixer-DheLIPvw.js",
+  "./assets/disc-3-DHZuxxFE.js",
+  "./assets/flame-Du8SBAIh.js",
+  "./assets/useFitHeight-C_NG50EB.js",
+  "./assets/CRTView-Gb91RJxI.js",
+  "./assets/zoom-in-l5i5n5tZ.js",
+  "./assets/layers-CPOd7B1T.js",
+  "./assets/useTabKeys-DZyWjz9B.js",
+  "./assets/ElementsBackground-BR3V8d73.js"
 ];
 
 self.addEventListener('install', (event) => {

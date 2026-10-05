@@ -1,0 +1,1 @@
+import{r as o}from"./index-CwqJXZVw.js";function w(s){const{min:n,max:e,share:r}=s,i=()=>typeof window>"u"||window.innerWidth<1024?e:Math.round(Math.max(n,Math.min(e,window.innerHeight*r))),[u,a]=o.useState(i);return o.useEffect(()=>{const t=()=>a(i());return window.addEventListener("resize",t),t(),()=>window.removeEventListener("resize",t)},[n,e,r]),u}export{w as u};
