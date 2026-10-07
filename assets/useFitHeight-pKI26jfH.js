@@ -1,1 +1,0 @@
-import{a4 as c,ah as u}from"./index-DzcfuwSA.js";function f(o){const{min:e,max:a,share:n,shareP:i,maxP:h}=o,r=c(s=>s.cls),m=c(s=>s.canvasH),t=r==="tablet-portrait";return!u(r)&&!t?a:Math.round(Math.max(e,Math.min(t?h??a:a,m*(t?i??n:n))))}export{f as u};

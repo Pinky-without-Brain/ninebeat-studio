@@ -16,7 +16,7 @@
 // genau diese Fehlerklasse hat dort schon einmal die Drum-Machine verstummen
 // lassen).
 
-const CACHE_NAME = 'ninebeat-shell-v100a1eb2ff67';
+const CACHE_NAME = 'ninebeat-shell-v0dbcb20cc88e';
 const PRECACHE_URLS = [
   "./index.html",
   "./manifest.json",
@@ -28,28 +28,27 @@ const PRECACHE_URLS = [
   "./ninebeat-processor.js",
   "./capture-tap-processor.js",
   "./environment-shim.js",
-  "./assets/index-B7vIv4l6.css",
-  "./assets/index-DzcfuwSA.js",
-  "./assets/NinebeatView-CFE1PfQc.js",
-  "./assets/AcidLine3View-tAh0hkg8.js",
-  "./assets/clipboard-check-DQ6Qh2VQ.js",
-  "./assets/SamplerView-Dkg3xjsm.js",
-  "./assets/repeat-C5IVFsrM.js",
-  "./assets/copy-Be5RNKIf.js",
-  "./assets/Poly6View-ZK3KeN5H.js",
-  "./assets/funnel-BbzLSiqq.js",
-  "./assets/InstrumentRecButton-CUwUJvq9.js",
-  "./assets/music-_JtAKo8_.js",
-  "./assets/PadRecordingModal-DLUAuYJc.js",
-  "./assets/StudioMixer-DrMeb08k.js",
-  "./assets/disc-3-BYj7TiMr.js",
-  "./assets/flame-DkTotpzY.js",
-  "./assets/useFitHeight-pKI26jfH.js",
-  "./assets/CRTView-BwgWvqGf.js",
-  "./assets/zoom-in-DGcPT31W.js",
-  "./assets/layers-ubNsrSVr.js",
-  "./assets/useTabKeys-DXtwTEWP.js",
-  "./assets/ElementsBackground-D7RCIa5Q.js"
+  "./assets/index-jIhf5PKS.css",
+  "./assets/index-Daks0psG.js",
+  "./assets/NinebeatView-FmzwZXJ9.js",
+  "./assets/AcidLine3View-CcFt2To6.js",
+  "./assets/clipboard-check-OpluQC7U.js",
+  "./assets/SamplerView-tgMOxjav.js",
+  "./assets/repeat-nMYChI-L.js",
+  "./assets/copy-D2mROo7K.js",
+  "./assets/Poly6View-Bt9QjZKM.js",
+  "./assets/funnel-3YLuCZSo.js",
+  "./assets/music-CY2G5X9a.js",
+  "./assets/PatternThumb-DYMsX_6P.js",
+  "./assets/StudioMixer-C0gTMvnO.js",
+  "./assets/disc-3-BqbC9_lP.js",
+  "./assets/flame-B-ANsMV5.js",
+  "./assets/PhoneInstrumentBar-DXYoJPoR.js",
+  "./assets/CRTView-1kXojqef.js",
+  "./assets/zoom-in-bjqoFG_y.js",
+  "./assets/layers-DORDsm1h.js",
+  "./assets/useTabKeys-BRZONxGR.js",
+  "./assets/ElementsBackground-B3wC9EeO.js"
 ];
 
 self.addEventListener('install', (event) => {
