@@ -1,10 +1,10 @@
-import{a as V,r as q,j as X,l as w,q as Y,v as Z,_ as J}from"./index-CwqJXZVw.js";const Q=`#version 300 es
+import{a as V,r as q,j as X,aa as Y,o as k,v as Z,B as J,a2 as Q}from"./index-DzcfuwSA.js";const $=`#version 300 es
 in vec2 a_position;
 out vec2 v_uv;
 void main() {
   v_uv = a_position * 0.5 + 0.5;
   gl_Position = vec4(a_position, 0.0, 1.0);
-}`,$=`#version 300 es
+}`,ee=`#version 300 es
 precision highp float;
 in vec2 v_uv;
 uniform float u_time;
@@ -34,7 +34,7 @@ void main() {
   vec3 color = vec3(0.2, 0.8, 0.3) * wave * 2.0;
   color += vec3(0.4, 0.6, 0.2) * rocks * (1.0 + u_kickPulse * 2.0);
   outColor = vec4(color, wave + rocks);
-}`,ee=`#version 300 es
+}`,te=`#version 300 es
 precision highp float;
 in vec2 v_uv;
 uniform float u_time;
@@ -91,7 +91,7 @@ void main() {
 
   float alpha = f * uv.y * (u_resonance * 2.0 + 0.5) * 2.0 + embers;
   outColor = vec4(color, alpha * 0.7);
-}`,te=`#version 300 es
+}`,oe=`#version 300 es
 precision highp float;
 in vec2 v_uv;
 uniform float u_time;
@@ -139,7 +139,7 @@ void main() {
   vec3 color = mix(vec3(0.0, 0.4, 0.8), vec3(0.5, 0.9, 1.0), totalRipple);
   color += vec3(1.0) * bubbles;
   outColor = vec4(color, (totalRipple + bubbles) * 0.9);
-}`,oe=`#version 300 es
+}`,ae=`#version 300 es
 precision highp float;
 in vec2 v_uv;
 uniform float u_time;
@@ -171,4 +171,4 @@ void main() {
   vec3 color = vec3(0.8, 0.9, 1.0) + vec3(1.0, 1.0, 0.8) * gust;
   color = mix(color, vec3(1.0, 0.8, 0.4), leaves);
   outColor = vec4(color, (alpha + leaves) * (0.5 + gust * 0.5));
-}`,ae={earth:$,fire:ee,water:te,air:oe},ie=1.5;function I(a,h,d){const f=a.createShader(h);return f?(a.shaderSource(f,d),a.compileShader(f),a.getShaderParameter(f,a.COMPILE_STATUS)?f:(console.error("[ElementsBackground] Shader:",a.getShaderInfoLog(f)),a.deleteShader(f),null)):null}const se=({element:a})=>{const h=V(),d=q.useRef(null);return q.useEffect(()=>{if(h!=="elements"||a==="aether")return;const f=d.current;if(!f)return;const i=document.createElement("canvas");i.dataset.elementsCanvas=a,i.className="absolute inset-0 w-full h-full pointer-events-none mix-blend-screen",f.appendChild(i);const e=i.getContext("webgl2",{alpha:!0,premultipliedAlpha:!1});if(!e){i.remove();return}const p=I(e,e.VERTEX_SHADER,Q),_=I(e,e.FRAGMENT_SHADER,ae[a]),l=e.createProgram(),g=e.createBuffer(),S=()=>{g&&e.deleteBuffer(g),l&&e.deleteProgram(l),p&&e.deleteShader(p),_&&e.deleteShader(_),e.getExtension("WEBGL_lose_context")?.loseContext(),i.remove()};if(!p||!_||!l||!g){S();return}if(e.attachShader(l,p),e.attachShader(l,_),e.linkProgram(l),!e.getProgramParameter(l,e.LINK_STATUS)){console.error("[ElementsBackground] Programm:",e.getProgramInfoLog(l)),S();return}e.useProgram(l),e.bindBuffer(e.ARRAY_BUFFER,g),e.bufferData(e.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),e.STATIC_DRAW);const k=e.getAttribLocation(l,"a_position");e.enableVertexAttribArray(k),e.vertexAttribPointer(k,2,e.FLOAT,!1,0,0),e.enable(e.BLEND),e.blendFunc(e.SRC_ALPHA,e.ONE);const u=r=>e.getUniformLocation(l,r),D=u("u_time"),L=u("u_kickPulse"),N=u("u_hatPulse"),H=u("u_cutoff"),O=u("u_resonance"),U=u("u_rms"),W=u("u_drops"),j=u("u_arp"),G=u("u_keys"),P=()=>{const r=Math.min(window.devicePixelRatio||1,ie),m=Math.max(1,Math.round(i.clientWidth*r)),s=Math.max(1,Math.round(i.clientHeight*r));(i.width!==m||i.height!==s)&&(i.width=m,i.height=s)},F=new ResizeObserver(P);F.observe(i),P();let x=0,C=performance.now(),y=0,R=0,E=0,A=new Float32Array(0),c=new Float32Array(0);const b=new Float32Array(36),M=new Array(12).fill(0),B=r=>(A.length!==r.frequencyBinCount&&(A=new Float32Array(r.frequencyBinCount)),r.getFloatFrequencyData(A),A),T=r=>{const m=Math.max(0,(r-C)/1e3);if(C=r,e.viewport(0,0,i.width,i.height),e.clearColor(0,0,0,0),e.clear(e.COLOR_BUFFER_BIT),e.uniform1f(D,r*.001),a==="earth"){y*=Math.exp(-m*15),R*=Math.exp(-m*20);const s=w.getDrumsAnalyserNode();if(s){const n=B(s);let v=0;for(let o=1;o<=5&&o<n.length;o++)v+=Math.max(0,n[o]+100);let t=0;for(let o=150;o<=200&&o<n.length;o++)t+=Math.max(0,n[o]+100);v>300&&(y=1),t>200&&(R=1)}e.uniform1f(L,y),e.uniform1f(N,R)}else if(a==="fire"){const{cutoff:s,resonance:n}=Y.getState().params;e.uniform1f(H,s/1e4),e.uniform1f(O,n)}else if(a==="water"){const s=w.getAnalyserNode();let n=0;if(s){c.length!==s.fftSize&&(c=new Float32Array(s.fftSize)),s.getFloatTimeDomainData(c);for(let t=0;t<c.length;t++)n+=c[t]*c[t];n=Math.sqrt(n/Math.max(1,c.length))}e.uniform1f(U,n);const v=Z.getState().activePads;for(let t=0;t<12;t++){const o=v[t];o&&o!==M[t]&&(M[t]=o,b[t*3]=Math.random()*.8+.1,b[t*3+1]=Math.random()*.8+.1,b[t*3+2]=r*.001)}e.uniform3fv(W,b)}else if(a==="air"){const s=J.getState();e.uniform1f(j,s.arp.active?1:0),E*=Math.exp(-m*5);const n=w.getAnalyserNode();if(n&&!s.isMuted){const v=B(n);let t=0;for(let o=30;o<=60&&o<v.length;o++)t+=Math.max(0,v[o]+100);t>500&&(E=1)}e.uniform1f(G,E)}e.drawArrays(e.TRIANGLES,0,6)},K=window.matchMedia?.("(prefers-reduced-motion: reduce)").matches??!1,z=r=>{T(r),x=requestAnimationFrame(z)};return K?x=requestAnimationFrame(()=>T(0)):x=requestAnimationFrame(z),()=>{cancelAnimationFrame(x),F.disconnect(),S()}},[h,a]),h!=="elements"?null:X.jsx("div",{ref:d,"aria-hidden":"true",className:"absolute inset-0 -z-10 pointer-events-none overflow-hidden"})};export{se as E};
+}`,re={earth:ee,fire:te,water:oe,air:ae},ie=1.5;function I(a,h,p){const f=a.createShader(h);return f?(a.shaderSource(f,p),a.compileShader(f),a.getShaderParameter(f,a.COMPILE_STATUS)?f:(console.error("[ElementsBackground] Shader:",a.getShaderInfoLog(f)),a.deleteShader(f),null)):null}const ne=({element:a})=>{const h=V(),p=q.useRef(null);return q.useEffect(()=>{if(h!=="elements"||a==="aether")return;const f=p.current;if(!f)return;const r=document.createElement("canvas");r.dataset.elementsCanvas=a,r.className="absolute inset-0 w-full h-full pointer-events-none mix-blend-screen",f.appendChild(r);const e=r.getContext("webgl2",{alpha:!0,premultipliedAlpha:!1});if(!e){r.remove();return}const d=I(e,e.VERTEX_SHADER,$),_=I(e,e.FRAGMENT_SHADER,re[a]),l=e.createProgram(),g=e.createBuffer(),S=()=>{g&&e.deleteBuffer(g),l&&e.deleteProgram(l),d&&e.deleteShader(d),_&&e.deleteShader(_),e.getExtension("WEBGL_lose_context")?.loseContext(),r.remove()};if(!d||!_||!l||!g){S();return}if(e.attachShader(l,d),e.attachShader(l,_),e.linkProgram(l),!e.getProgramParameter(l,e.LINK_STATUS)){console.error("[ElementsBackground] Programm:",e.getProgramInfoLog(l)),S();return}e.useProgram(l),e.bindBuffer(e.ARRAY_BUFFER,g),e.bufferData(e.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),e.STATIC_DRAW);const w=e.getAttribLocation(l,"a_position");e.enableVertexAttribArray(w),e.vertexAttribPointer(w,2,e.FLOAT,!1,0,0),e.enable(e.BLEND),e.blendFunc(e.SRC_ALPHA,e.ONE);const u=i=>e.getUniformLocation(l,i),D=u("u_time"),L=u("u_kickPulse"),N=u("u_hatPulse"),H=u("u_cutoff"),O=u("u_resonance"),U=u("u_rms"),W=u("u_drops"),j=u("u_arp"),G=u("u_keys"),F=()=>{const i=Math.min(Y(),ie),m=Math.max(1,Math.round(r.clientWidth*i)),s=Math.max(1,Math.round(r.clientHeight*i));(r.width!==m||r.height!==s)&&(r.width=m,r.height=s)},P=new ResizeObserver(F);P.observe(r),F();let x=0,B=performance.now(),y=0,E=0,R=0,A=new Float32Array(0),c=new Float32Array(0);const b=new Float32Array(36),C=new Array(12).fill(0),M=i=>(A.length!==i.frequencyBinCount&&(A=new Float32Array(i.frequencyBinCount)),i.getFloatFrequencyData(A),A),T=i=>{const m=Math.max(0,(i-B)/1e3);if(B=i,e.viewport(0,0,r.width,r.height),e.clearColor(0,0,0,0),e.clear(e.COLOR_BUFFER_BIT),e.uniform1f(D,i*.001),a==="earth"){y*=Math.exp(-m*15),E*=Math.exp(-m*20);const s=k.getDrumsAnalyserNode();if(s){const n=M(s);let v=0;for(let o=1;o<=5&&o<n.length;o++)v+=Math.max(0,n[o]+100);let t=0;for(let o=150;o<=200&&o<n.length;o++)t+=Math.max(0,n[o]+100);v>300&&(y=1),t>200&&(E=1)}e.uniform1f(L,y),e.uniform1f(N,E)}else if(a==="fire"){const{cutoff:s,resonance:n}=Z.getState().params;e.uniform1f(H,s/1e4),e.uniform1f(O,n)}else if(a==="water"){const s=k.getAnalyserNode();let n=0;if(s){c.length!==s.fftSize&&(c=new Float32Array(s.fftSize)),s.getFloatTimeDomainData(c);for(let t=0;t<c.length;t++)n+=c[t]*c[t];n=Math.sqrt(n/Math.max(1,c.length))}e.uniform1f(U,n);const v=J.getState().activePads;for(let t=0;t<12;t++){const o=v[t];o&&o!==C[t]&&(C[t]=o,b[t*3]=Math.random()*.8+.1,b[t*3+1]=Math.random()*.8+.1,b[t*3+2]=i*.001)}e.uniform3fv(W,b)}else if(a==="air"){const s=Q.getState();e.uniform1f(j,s.arp.active?1:0),R*=Math.exp(-m*5);const n=k.getAnalyserNode();if(n&&!s.isMuted){const v=M(n);let t=0;for(let o=30;o<=60&&o<v.length;o++)t+=Math.max(0,v[o]+100);t>500&&(R=1)}e.uniform1f(G,R)}e.drawArrays(e.TRIANGLES,0,6)},K=window.matchMedia?.("(prefers-reduced-motion: reduce)").matches??!1,z=i=>{T(i),x=requestAnimationFrame(z)};return K?x=requestAnimationFrame(()=>T(0)):x=requestAnimationFrame(z),()=>{cancelAnimationFrame(x),P.disconnect(),S()}},[h,a]),h!=="elements"?null:X.jsx("div",{ref:p,"aria-hidden":"true",className:"absolute inset-0 -z-10 pointer-events-none overflow-hidden"})};export{ne as E};

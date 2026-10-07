@@ -16,7 +16,7 @@
 // genau diese Fehlerklasse hat dort schon einmal die Drum-Machine verstummen
 // lassen).
 
-const CACHE_NAME = 'ninebeat-shell-v2a8369cee548';
+const CACHE_NAME = 'ninebeat-shell-v100a1eb2ff67';
 const PRECACHE_URLS = [
   "./index.html",
   "./manifest.json",
@@ -28,28 +28,28 @@ const PRECACHE_URLS = [
   "./ninebeat-processor.js",
   "./capture-tap-processor.js",
   "./environment-shim.js",
-  "./assets/index-CfDjUO19.css",
-  "./assets/index-CwqJXZVw.js",
-  "./assets/NinebeatView-CwC5MCCf.js",
-  "./assets/AcidLine3View-ZkAo0CLz.js",
-  "./assets/clipboard-check-egmpMCBN.js",
-  "./assets/SamplerView-CSzwyuTx.js",
-  "./assets/repeat-Dy5Hu-vy.js",
-  "./assets/copy-CqY80Rlu.js",
-  "./assets/Poly6View-BIv7yYuW.js",
-  "./assets/funnel-BnQPrM9U.js",
-  "./assets/InstrumentRecButton-7HeZH2tR.js",
-  "./assets/music-DReRdeFE.js",
-  "./assets/PadRecordingModal-tgrS5ZKl.js",
-  "./assets/StudioMixer-DheLIPvw.js",
-  "./assets/disc-3-DHZuxxFE.js",
-  "./assets/flame-Du8SBAIh.js",
-  "./assets/useFitHeight-C_NG50EB.js",
-  "./assets/CRTView-Gb91RJxI.js",
-  "./assets/zoom-in-l5i5n5tZ.js",
-  "./assets/layers-CPOd7B1T.js",
-  "./assets/useTabKeys-DZyWjz9B.js",
-  "./assets/ElementsBackground-BR3V8d73.js"
+  "./assets/index-B7vIv4l6.css",
+  "./assets/index-DzcfuwSA.js",
+  "./assets/NinebeatView-CFE1PfQc.js",
+  "./assets/AcidLine3View-tAh0hkg8.js",
+  "./assets/clipboard-check-DQ6Qh2VQ.js",
+  "./assets/SamplerView-Dkg3xjsm.js",
+  "./assets/repeat-C5IVFsrM.js",
+  "./assets/copy-Be5RNKIf.js",
+  "./assets/Poly6View-ZK3KeN5H.js",
+  "./assets/funnel-BbzLSiqq.js",
+  "./assets/InstrumentRecButton-CUwUJvq9.js",
+  "./assets/music-_JtAKo8_.js",
+  "./assets/PadRecordingModal-DLUAuYJc.js",
+  "./assets/StudioMixer-DrMeb08k.js",
+  "./assets/disc-3-BYj7TiMr.js",
+  "./assets/flame-DkTotpzY.js",
+  "./assets/useFitHeight-pKI26jfH.js",
+  "./assets/CRTView-BwgWvqGf.js",
+  "./assets/zoom-in-DGcPT31W.js",
+  "./assets/layers-ubNsrSVr.js",
+  "./assets/useTabKeys-DXtwTEWP.js",
+  "./assets/ElementsBackground-D7RCIa5Q.js"
 ];
 
 self.addEventListener('install', (event) => {
