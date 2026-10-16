@@ -118,7 +118,7 @@ class Poly6Processor extends AudioWorkletProcessor {
     this.voices = [];
     for (let i = 0; i < 8; i++) {
       this.voices.push({
-        index: i, active: false, midiNote: 0, frequency: 261.63, velocity: 0.8, noteOnTime: 0,
+        index: i, active: false, gen: 0, midiNote: 0, frequency: 261.63, velocity: 0.8, noteOnTime: 0,
         phase: 0, subPhase: 0, z1: 0, z2: 0, z3: 0, z4: 0,
         hpfX1: 0, hpfX2: 0, hpfY1: 0, hpfY2: 0, bbX1: 0, bbX2: 0, bbY1: 0, bbY2: 0,
         noteId: 0, bendTarget: 1, bendCurrent: 1, pressureTarget: 0, pressureCurrent: 0,
@@ -127,6 +127,13 @@ class Poly6Processor extends AudioWorkletProcessor {
       });
     }
 
+    // Geplante Ereignisse (16.10.2026, Fahrplan Block 2): noteOn/noteOff/allNotesOff mit `when`
+    // (AudioContext-Sekunden) warten hier, nach Zeit sortiert, und werden in process() am
+    // exakten Frame umgesetzt. Vorher wirkte jede Nachricht sofort - der Hauptthread schickte
+    // sie aber aus der Vorausschau-Schleife bis zu `lookaheadMs` zu frueh und auf 20-ms-Ticks
+    // gerastert: das hoerbare Zittern des Akkord-Sequenzers. Ohne `when` weiter sofort
+    // (Klaviatur, MIDI, Panik).
+    this.pending = [];
     this.port.onmessage = (e) => {
       const msg = e.data;
       if (msg.type === 'init') {
@@ -136,15 +143,8 @@ class Poly6Processor extends AudioWorkletProcessor {
       } else if (msg.type === 'updateConcertPitch') {
         this.concertPitch = msg.pitch;
         this.mpe = msg.mpe;
-      } else if (msg.type === 'noteOn') {
-        const v = this.voices[msg.voiceIndex];
-        if (v) Object.assign(v, msg.state);
-      } else if (msg.type === 'noteOff') {
-        const v = this.voices[msg.voiceIndex];
-        if (v) {
-          v.envStage = 'release';
-          v.gateTarget = 0.0;
-        }
+      } else if (msg.type === 'noteOn' || msg.type === 'noteOff') {
+        this.schedule(msg);
       } else if (msg.type === 'setExpression') {
         const v = this.voices.find(voice => voice.active && voice.noteId === msg.noteId);
         if (v) {
@@ -157,22 +157,64 @@ class Poly6Processor extends AudioWorkletProcessor {
           if (v.active) v.bendTarget = msg.bend;
         }
       } else if (msg.type === 'allNotesOff') {
-        for (const v of this.voices) {
-          v.envStage = 'release';
-          v.gateTarget = 0.0;
-        }
+        this.schedule(msg);
       }
     };
+  }
+
+  /** Mit Zielzeit einreihen (nach `when` sortiert), ohne Zielzeit sofort anwenden. */
+  schedule(msg) {
+    const scheduled = typeof msg.when === 'number';
+    if (!scheduled) { this.applyEvent(msg); return; }
+    let i = this.pending.length;
+    while (i > 0 && this.pending[i - 1].when > msg.when) i--;
+    this.pending.splice(i, 0, { when: msg.when, msg });
+  }
+
+  /** Ein Ereignis wirken lassen. noteOff/noteOn tragen eine Generationsnummer je Stimme: ein
+      geplantes Loslassen trifft nur die Note, fuer die es geplant war - wurde die Stimme
+      inzwischen neu angeschlagen (gen groesser), verfaellt es. */
+  applyEvent(msg) {
+    if (msg.type === 'noteOn') {
+      const v = this.voices[msg.voiceIndex];
+      if (v) Object.assign(v, msg.state);
+    } else if (msg.type === 'noteOff') {
+      const v = this.voices[msg.voiceIndex];
+      if (v && (msg.gen === undefined || msg.gen === v.gen)) {
+        v.envStage = 'release';
+        v.gateTarget = 0.0;
+      }
+    } else if (msg.type === 'allNotesOff') {
+      for (const v of this.voices) {
+        v.envStage = 'release';
+        v.gateTarget = 0.0;
+      }
+    }
+  }
+
+  /** Alle Ereignisse, die in diesen Block fallen, mit ihrem Frame; Verspaetete auf Frame 0. */
+  takeDue(t0, len) {
+    const blockEnd = t0 + len / sampleRate;
+    const due = [];
+    while (this.pending.length && this.pending[0].when < blockEnd) {
+      const ev = this.pending.shift();
+      ev.frame = Math.max(0, Math.min(len - 1, Math.floor((ev.when - t0) * sampleRate)));
+      due.push(ev);
+    }
+    return due.length ? due : null;
   }
 
   process(inputs, outputs, parameters) {
     const outL = outputs[0][0];
     const outR = outputs[0][1];
     if (!outL || !outR) return true;
-    
+
     const len = outL.length;
     outL.fill(0);
     outR.fill(0);
+    // `currentTime` ist die Blockzeit des Worklet-Scopes - dieselbe Uhr wie `audioCtx.currentTime`
+    // auf dem Hauptthread, gegen die die Vorausschau plant.
+    const due = this.pending.length ? this.takeDue(currentTime, len) : null;
 
     const { dco, hpf, vcf, vca, adsr, chorusMode, lfo, benderValue, bendSensDco, bendSensVcf, vcfPedal } = this.params;
     const mpe = this.mpe;
@@ -228,6 +270,9 @@ class Poly6Processor extends AudioWorkletProcessor {
     const chorusIncR = (2.0 * Math.PI * chorusRateR) / this.sampleRate;
 
     for (let i = 0; i < len; i++) {
+      if (due) {
+        while (due.length && due[0].frame <= i) this.applyEvent(due.shift().msg);
+      }
       let drySum = 0.0;
 
       this.chorusLfoPhase1 += chorusIncL;
