@@ -16,7 +16,7 @@
 // genau diese Fehlerklasse hat dort schon einmal die Drum-Machine verstummen
 // lassen).
 
-const CACHE_NAME = 'ninebeat-shell-vtactile01';
+const CACHE_NAME = 'ninebeat-shell-vhandheld01';
 const PRECACHE_URLS = [
   "./index.html",
   "./manifest.json",
@@ -50,7 +50,12 @@ const PRECACHE_URLS = [
   "./assets/useTabKeys-DesNxWgn.js",
   "./assets/ElementsBackground-uZPMQVxw.js",
   "./theme-tactile/tactile.theme.js",
-  "./theme-tactile/tactile.css"
+  "./theme-tactile/tactile.css",
+  "./theme-handheld/handheld.theme.js",
+  "./theme-handheld/handheld.css",
+  "./touch-guard.js",
+  "./gamepad/gamepad-nav.js",
+  "./gamepad/gamepad.css"
 ];
 
 self.addEventListener('install', (event) => {

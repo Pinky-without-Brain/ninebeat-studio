@@ -34,7 +34,7 @@
         try {
           var LIGHT_SCHEME_THEME_IDS = ['atelier'];
           // 'tactile' (dunkel) siehe theme-tactile/PLAN.md.
-          var THEME_COLORS = { 'neon-noir': '#090a0d', atelier: '#ECEEF1', elements: '#090a0d', tactile: '#0F1115' };
+          var THEME_COLORS = { 'neon-noir': '#090a0d', atelier: '#ECEEF1', elements: '#090a0d', tactile: '#0F1115', handheld: '#050607' };
 
           var raw = localStorage.getItem('ninebeat.settings.v1');
           if (!raw) return;
@@ -70,6 +70,14 @@
          Das Skript muss vor dem Modul-Bundle laufen (klassisches Skript, blockierend). -->
     <script src="/ninebeat-studio/theme-tactile/tactile.theme.js"></script>
     <link rel="stylesheet" href="/ninebeat-studio/theme-tactile/tactile.css">
+    <!-- Theme HANDHELD (ROG Xbox Ally X u. ae.), siehe theme-handheld/PLAN.md. -->
+    <script src="/ninebeat-studio/theme-handheld/handheld.theme.js"></script>
+    <link rel="stylesheet" href="/ninebeat-studio/theme-handheld/handheld.css">
+    <!-- Geraeteweit: Kontextmenue bei Touch unterdruecken (Windows-Langdruck). -->
+    <script src="/ninebeat-studio/touch-guard.js"></script>
+    <!-- Gamepad-Navigation (Xbox-Belegung), laeuft erst, wenn ein Controller gemeldet wird. -->
+    <script defer src="/ninebeat-studio/gamepad/gamepad-nav.js"></script>
+    <link rel="stylesheet" href="/ninebeat-studio/gamepad/gamepad.css">
   </head>
   <body class="h-full w-full overflow-hidden bg-hw-darkest text-hw-text touch-none">
     <div id="root" class="h-full w-full flex flex-col"></div>

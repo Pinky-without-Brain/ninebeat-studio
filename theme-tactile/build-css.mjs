@@ -1,16 +1,21 @@
-// Erzeugt theme-tactile/tactile.css aus tactile.theme.js.
+// Erzeugt <theme>.css aus <theme>.theme.js (Vorgabe: theme-tactile/tactile).
+// Aufruf: node theme-tactile/build-css.mjs [pfad/zu/name.theme.js]
+// Daneben wird <pfad>/touch.css (falls vorhanden) angehaengt.
 // Vorlage ist der NEON-NOIR-Variablenblock des gebauten Stylesheets (gleiches
 // Schema, identische Palette); alles Theme-Spezifische wird ersetzt, danach
 // werden die Touch-Regeln aus touch.css angehaengt.
 //   node theme-tactile/build-css.mjs
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
-const theme = createRequire(import.meta.url)('./tactile.theme.js');
+const themeFile = process.argv[2] ? resolve(process.argv[2]) : join(here, 'tactile.theme.js');
+const themeDir = dirname(themeFile);
+const theme = createRequire(import.meta.url)(themeFile);
 
 const cssFile = readdirSync(join(root, 'assets')).find((f) => /^index-.*\.css$/.test(f));
 const bundleCss = readFileSync(join(root, 'assets', cssFile), 'utf8');
@@ -77,9 +82,10 @@ const untouched = [...vars.keys()].filter((k) => !touched.has(k) && !/^--pal-/.t
 if (untouched.length) throw new Error('Nicht gemappte Variablen: ' + untouched.join(', '));
 
 const block = `[data-theme=${theme.id}]{` + [...vars].map(([k, v]) => `${k}:${v}`).join(';') + '}';
-const touch = readFileSync(join(here, 'touch.css'), 'utf8');
-const header = `/* TACTILE - generiert von theme-tactile/build-css.mjs aus tactile.theme.js. Nicht von Hand bearbeiten. */\n`;
-writeFileSync(join(here, 'tactile.css'), header + block + '\n' + touch);
+const touchFile = join(themeDir, 'touch.css');
+const touch = existsSync(touchFile) ? readFileSync(touchFile, 'utf8') : '';
+const header = `/* ${theme.name} - generiert von theme-tactile/build-css.mjs aus ${theme.id}.theme.js. Nicht von Hand bearbeiten. */\n`;
+writeFileSync(join(themeDir, `${theme.id}.css`), header + block + '\n' + touch);
 
 // Kontrastbericht (WCAG 2.x).
 const lum = (c) => { const [r, g, b] = hex(c).map((n) => { const s = n / 255; return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
