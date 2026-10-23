@@ -23,3 +23,25 @@ Entwicklung findet in einem separaten, privaten Repository statt.
   ueber Lautsprecher kann es rueckkoppeln.
 - Auf dem iPad laesst sich die Seite ueber „Zum Home-Bildschirm" als
   Vollbild-App ablegen.
+
+## Theme TACTILE (Touch-first)
+
+Unter `theme-tactile/` liegt ein zusaetzliches, auf Fingerbedienung
+ausgelegtes Theme samt Plan (`PLAN.md`), ThemeDefinition
+(`tactile.theme.js`), Touch-Regeln (`touch.css`) und Generator
+(`build-css.mjs`, erzeugt `tactile.css`). Es wird in `index.html` vor dem
+Bundle geladen und ueber einen minimalen Patch der Theme-Registry im Bundle
+angemeldet. Beim naechsten Build-Stand aus dem Quell-Repo muss es dort
+eingepflegt werden (siehe `PLAN.md`, Abschnitt 5), sonst faellt die Auswahl
+wieder auf ATELIER zurueck.
+
+## Theme HANDHELD, Gamepad und Touch-Schutz
+
+- `theme-handheld/`: Theme fuer 7-Zoll-Handhelds (ASUS ROG Xbox Ally X),
+  Plan in `PLAN.md`; Erzeugung wie bei TACTILE mit
+  `node theme-tactile/build-css.mjs theme-handheld/handheld.theme.js`.
+- `gamepad/gamepad-nav.js`: Bedienung per Controller (Xbox-Belegung:
+  D-Pad/Stick Fokus, A waehlen, B zurueck, LB/RB Instrument, LT/RT Wert,
+  Menue Play, Ansicht Stop, L3 Legende). Themenunabhaengig.
+- `touch-guard.js`: unterdrueckt das Kontextmenue bei Touch/Stift
+  (Windows-Langdruck), Maus-Rechtsklick bleibt moeglich.
