@@ -23,3 +23,14 @@ Entwicklung findet in einem separaten, privaten Repository statt.
   ueber Lautsprecher kann es rueckkoppeln.
 - Auf dem iPad laesst sich die Seite ueber „Zum Home-Bildschirm" als
   Vollbild-App ablegen.
+
+## Theme TACTILE (Touch-first)
+
+Unter `theme-tactile/` liegt ein zusaetzliches, auf Fingerbedienung
+ausgelegtes Theme samt Plan (`PLAN.md`), ThemeDefinition
+(`tactile.theme.js`), Touch-Regeln (`touch.css`) und Generator
+(`build-css.mjs`, erzeugt `tactile.css`). Es wird in `index.html` vor dem
+Bundle geladen und ueber einen minimalen Patch der Theme-Registry im Bundle
+angemeldet. Beim naechsten Build-Stand aus dem Quell-Repo muss es dort
+eingepflegt werden (siehe `PLAN.md`, Abschnitt 5), sonst faellt die Auswahl
+wieder auf ATELIER zurueck.

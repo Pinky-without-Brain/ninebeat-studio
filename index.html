@@ -33,7 +33,8 @@
       (function () {
         try {
           var LIGHT_SCHEME_THEME_IDS = ['atelier'];
-          var THEME_COLORS = { 'neon-noir': '#090a0d', atelier: '#ECEEF1', elements: '#090a0d' };
+          // 'tactile' (dunkel) siehe theme-tactile/PLAN.md.
+          var THEME_COLORS = { 'neon-noir': '#090a0d', atelier: '#ECEEF1', elements: '#090a0d', tactile: '#0F1115' };
 
           var raw = localStorage.getItem('ninebeat.settings.v1');
           if (!raw) return;
@@ -65,6 +66,10 @@
     <title>Ninebeat Studio — Hybrid Touch Workstation</title>
     <script type="module" crossorigin src="/ninebeat-studio/assets/index--mJANpn3.js"></script>
     <link rel="stylesheet" crossorigin href="/ninebeat-studio/assets/index-DRJEE8cV.css">
+    <!-- Theme TACTILE (Touch-first): Definition + Variablen, siehe theme-tactile/PLAN.md.
+         Das Skript muss vor dem Modul-Bundle laufen (klassisches Skript, blockierend). -->
+    <script src="/ninebeat-studio/theme-tactile/tactile.theme.js"></script>
+    <link rel="stylesheet" href="/ninebeat-studio/theme-tactile/tactile.css">
   </head>
   <body class="h-full w-full overflow-hidden bg-hw-darkest text-hw-text touch-none">
     <div id="root" class="h-full w-full flex flex-col"></div>

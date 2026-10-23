@@ -16,7 +16,7 @@
 // genau diese Fehlerklasse hat dort schon einmal die Drum-Machine verstummen
 // lassen).
 
-const CACHE_NAME = 'ninebeat-shell-veaa7a8292925';
+const CACHE_NAME = 'ninebeat-shell-vtactile01';
 const PRECACHE_URLS = [
   "./index.html",
   "./manifest.json",
@@ -48,7 +48,9 @@ const PRECACHE_URLS = [
   "./assets/zoom-in-BXnT8VwR.js",
   "./assets/layers-hByl1bYl.js",
   "./assets/useTabKeys-DesNxWgn.js",
-  "./assets/ElementsBackground-uZPMQVxw.js"
+  "./assets/ElementsBackground-uZPMQVxw.js",
+  "./theme-tactile/tactile.theme.js",
+  "./theme-tactile/tactile.css"
 ];
 
 self.addEventListener('install', (event) => {
