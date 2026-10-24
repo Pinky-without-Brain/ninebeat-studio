@@ -1,3 +1,7 @@
+// Seit D4-w2 (19.10.2026) gilt alles unten fuer "./ninebeat_engine.js", importiert von
+// ninebeat-engine-processor.js; die frueheren Namen ninebeat_web_engine.js, ninebeat-processor.js und
+// web/ (Bau-Rezept, heute engine/wasm/) sind entfallen (Stand AUFRAEUMEN, 20.10.2026).
+//
 // GUI-VARIANTE "WEB" (Branch gui-cyberpunk-web): MUSS als allererstes
 // Modul importiert werden, VOR "./ninebeat_web_engine.js" (siehe
 // ninebeat-processor.js) - ES-Modul-Importe werden vollstaendig ausgewertet,

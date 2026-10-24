@@ -4,15 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <!-- Match the default theme's scheme. Since 27.09.2026 (user decision)
-         the default theme is ATELIER (light) instead of NEON NOIR (dark) -
-         "default" is the light-content iOS status bar style, kept in sync
-         with the inline script below and src/theme/registry.ts. -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <!-- Match the default theme's scheme. Seit dem Redesign (23.10.2026,
+         Nutzer-Entscheidung) ist STUDIO DARK die Vorgabe - dunkle Statusleiste,
+         in sync mit dem Vorab-Skript unten und src/theme/registry.ts. -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Ninebeat" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <!-- ATELIER's ThemeDefinition.metaThemeColor - see theme-color note above. -->
-    <meta name="theme-color" content="#ECEEF1" />
+    <!-- STUDIO DARK's ThemeDefinition.metaThemeColor - see theme-color note above. -->
+    <meta name="theme-color" content="#0c0d0f" />
     <script>
       // Applies the saved theme (if any) before first paint, so the app
       // never flashes ATELIER (the default as of 27.09.2026, user decision)
@@ -32,9 +31,8 @@
       // tests/smoke.mjs section [36] ("scheme" field, "metaThemeColor" field).
       (function () {
         try {
-          var LIGHT_SCHEME_THEME_IDS = ['atelier'];
-          // 'tactile' (dunkel) siehe theme-tactile/PLAN.md.
-          var THEME_COLORS = { 'neon-noir': '#090a0d', atelier: '#ECEEF1', elements: '#090a0d', tactile: '#0F1115', handheld: '#050607' };
+          var LIGHT_SCHEME_THEME_IDS = ['studio-light'];
+          var THEME_COLORS = { 'studio-dark': '#0c0d0f', 'studio-light': '#f3f4f6' };
 
           var raw = localStorage.getItem('ninebeat.settings.v1');
           if (!raw) return;
@@ -64,22 +62,10 @@
     <link rel="apple-touch-icon" href="/ninebeat-studio/icon.svg" />
     <link rel="manifest" href="/ninebeat-studio/manifest.json" />
     <title>Ninebeat Studio — Hybrid Touch Workstation</title>
-    <script type="module" crossorigin src="/ninebeat-studio/assets/index--mJANpn3.js"></script>
-    <link rel="stylesheet" crossorigin href="/ninebeat-studio/assets/index-DRJEE8cV.css">
-    <!-- Theme TACTILE (Touch-first): Definition + Variablen, siehe theme-tactile/PLAN.md.
-         Das Skript muss vor dem Modul-Bundle laufen (klassisches Skript, blockierend). -->
-    <script src="/ninebeat-studio/theme-tactile/tactile.theme.js"></script>
-    <link rel="stylesheet" href="/ninebeat-studio/theme-tactile/tactile.css">
-    <!-- Theme HANDHELD (ROG Xbox Ally X u. ae.), siehe theme-handheld/PLAN.md. -->
-    <script src="/ninebeat-studio/theme-handheld/handheld.theme.js"></script>
-    <link rel="stylesheet" href="/ninebeat-studio/theme-handheld/handheld.css">
-    <!-- Geraeteweit: Kontextmenue bei Touch unterdruecken (Windows-Langdruck). -->
-    <script src="/ninebeat-studio/touch-guard.js"></script>
-    <!-- Gamepad-Navigation (Xbox-Belegung), laeuft erst, wenn ein Controller gemeldet wird. -->
-    <script defer src="/ninebeat-studio/gamepad/gamepad-nav.js"></script>
-    <link rel="stylesheet" href="/ninebeat-studio/gamepad/gamepad.css">
+    <script type="module" crossorigin src="/ninebeat-studio/assets/index-B7OTCICj.js"></script>
+    <link rel="stylesheet" crossorigin href="/ninebeat-studio/assets/index-B3X5ZyF4.css">
   </head>
   <body class="h-full w-full overflow-hidden bg-hw-darkest text-hw-text touch-none">
-    <div id="root" class="h-full w-full flex flex-col"></div>
+    <div id="root" class="h-full w-full flex flex-col"></div>
   </body>
 </html>
