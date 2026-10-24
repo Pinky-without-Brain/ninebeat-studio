@@ -1,0 +1,1 @@
+import{f as i,x as d}from"./index-BW7ByoHf.js";function v(e,n,s){const o=i.useRef({tabs:e,current:n,select:s});o.current={tabs:e,current:n,select:s},i.useEffect(()=>{const r=a=>{const{tabs:t,current:f,select:u}=o.current,x=t.indexOf(f),c=t[(x+a+t.length)%t.length];c!==void 0&&u(c)};return d({"active.tabPrev":{down:()=>r(-1)},"active.tabNext":{down:()=>r(1)}})},[])}export{v as u};
